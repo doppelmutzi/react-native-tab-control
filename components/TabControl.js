@@ -25,7 +25,7 @@ const wrapperStyles = StyleSheet.create({
 
 const tabControlStyles = isIos ? iosTabControlStyles : androidTabControlStyles;
 
-const TabControl = ({ values, onChange }) => {
+const TabControl = ({ values, onChange, renderSeparators }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleIndexChange = index => {
@@ -39,6 +39,7 @@ const TabControl = ({ values, onChange }) => {
         values={values}
         selectedIndex={selectedIndex}
         onTabPress={handleIndexChange}
+        renderSeparators={renderSeparators}
       />
     </View>
   );
@@ -47,11 +48,17 @@ const TabControl = ({ values, onChange }) => {
 TabControl.propTypes = {
   values: arrayOf(string).isRequired,
   onChange: func.isRequired,
+  renderSeparators: bool
 };
+
+TabControl.defaultProps = {
+  renderSeparators: false
+}
 
 export default TabControl;
 
-function SegmentedControl({ values: tabValues, selectedIndex, onTabPress }) {
+function SegmentedControl({ values: tabValues, selectedIndex, onTabPress, renderSeparators }) {
+  console.log(renderSeparators)
   const { tabsContainerStyle } = tabControlStyles;
   return (
     <View style={[{ flexDirection: 'row' }, tabsContainerStyle]}>
@@ -62,6 +69,7 @@ function SegmentedControl({ values: tabValues, selectedIndex, onTabPress }) {
           isActive={selectedIndex === index}
           isFirst={index === 0}
           isLast={index === tabValues.length - 1}
+          renderLeftSeparator={renderSeparators && shouldRenderLeftSeparator(index, selectedIndex)}
           key={tabValue}
         />
       ))}
@@ -69,10 +77,22 @@ function SegmentedControl({ values: tabValues, selectedIndex, onTabPress }) {
   );
 }
 
+function shouldRenderLeftSeparator(index, selectedIndex) {
+  const isFirst = index === 0;
+  const isSelected = index === selectedIndex;
+  const isPrevSelected = index - 1 === selectedIndex;
+  console.log(index, selectedIndex, isFirst, isSelected, isPrevSelected);
+  if (isFirst || isSelected || isPrevSelected) {
+    return false;
+  }
+  return true;
+}
+
 SegmentedControl.propTypes = {
   values: arrayOf(string).isRequired,
   onTabPress: func.isRequired,
-  selectedIndex: number,
+  renderSeparators: bool.isRequired,
+  selectedIndex: number
 };
 
 SegmentedControl.defaultProps = {
@@ -84,21 +104,25 @@ const OsSpecificTouchableHighlight = ({
   children,
   style: tabControlStyle,
   onPress,
+  renderLeftSeparator
 }) =>
 // TODO ios selektiertes element wird etwas kleiner (siehe maps / dm coupon)
   isIos ? (
-    <TouchableHighlight
+    <>
+      {renderLeftSeparator && <View style={{width: 1, marginTop: 8, marginBottom: 8, backgroundColor: theme.color.separator}}></View>}
+      <TouchableHighlight
       underlayColor={
         isActive
-          ? touchableHighlightColors.active
-          : touchableHighlightColors.default
+        ? touchableHighlightColors.active
+        : touchableHighlightColors.default
       }
       style={tabControlStyle}
       onPress={onPress}
-    >
+      >
       {children}
-    </TouchableHighlight>
-  ) : (
+      </TouchableHighlight>
+    </>
+    ) : (
     <TouchableNativeFeedback
       onPress={onPress}
       background={TouchableNativeFeedback.Ripple(theme.color.ripple, true)}
@@ -113,13 +137,15 @@ OsSpecificTouchableHighlight.propTypes = {
   onPress: func.isRequired,
   style: arrayOf(ViewPropTypes.style).isRequired,
   isActive: bool,
+  renderLeftSeparator: bool
 };
 
 OsSpecificTouchableHighlight.defaultProps = {
   isActive: false,
+  renderLeftSeparator: false
 };
 
-function Tab({ label, onPress, isActive, isFirst, isLast }) {
+function Tab({ label, onPress, isActive, isFirst, isLast, renderLeftSeparator }) {
   const {
     tabStyle,
     tabTextStyle,
@@ -138,6 +164,7 @@ function Tab({ label, onPress, isActive, isFirst, isLast }) {
         isFirst ? firstTabStyle : {},
         isLast ? lastTabStyle : {},
       ]}
+      renderLeftSeparator={renderLeftSeparator}
     >
       <Text style={[tabTextStyle, isActive ? activeTabTextStyle : {}]}>
         {label}
@@ -152,4 +179,5 @@ Tab.propTypes = {
   isActive: bool.isRequired,
   isFirst: bool.isRequired,
   isLast: bool.isRequired,
+  renderLeftSeparator: bool.isRequired
 };

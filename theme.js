@@ -8,8 +8,6 @@ export default {
     inactiveTextColor: "white",
     activeBgColor: "#3779B2",
     activeTextColor: "white",
-    // separator optional via props
-    // TODO eigenes prop shape (interface für tab control)
     separator: "#3779B2",
     ripple: "#053564"
   },

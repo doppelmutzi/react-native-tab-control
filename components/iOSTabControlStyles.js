@@ -6,7 +6,7 @@ const {
   tabsContainerColor,
   inactiveTextColor,
   activeBgColor,
-   activeTextColor,
+  activeTextColor,
 } = theme.color;
 
 const borderRadius = 7;
