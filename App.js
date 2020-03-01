@@ -7,9 +7,10 @@ import TabControl from "./components/TabControl";
 import theme from './theme';
 
 export default () => {
-    // TODO wenn Zeit swipeable Element und noch Harden und co hinzufügen
-    // TODO wenn Zeit iOS Animation 
-    // TODO eigenes prop shape (interface für tab control)
+  // TODO ios selektiertes element wird etwas kleiner (siehe maps / dm coupon)
+  // TODO wenn Zeit iOS Animation 
+  // TODO eigenes prop shape (interface für tab control)
+  // TODO wenn Zeit swipeable Element und noch Harden und co hinzufügen
     
     return (
       <View style={styles.container}>

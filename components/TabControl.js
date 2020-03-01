@@ -3,9 +3,12 @@ import { arrayOf, string, func, number, bool, node } from 'prop-types';
 import {
   View,
   Text,
+  Animated,
+  Easing,
   StyleSheet,
   Platform,
   TouchableHighlight,
+  TouchableWithoutFeedback,
   TouchableNativeFeedback,
   ViewPropTypes,
 } from 'react-native';
@@ -58,14 +61,15 @@ TabControl.defaultProps = {
 export default TabControl;
 
 function SegmentedControl({ values: tabValues, selectedIndex, onTabPress, renderSeparators }) {
-  console.log(renderSeparators)
   const { tabsContainerStyle } = tabControlStyles;
   return (
     <View style={[{ flexDirection: 'row' }, tabsContainerStyle]}>
       {tabValues.map((tabValue, index) => (
         <Tab
           label={tabValue}
-          onPress={() => onTabPress(index)}
+          onPress={() => {
+            onTabPress(index);
+          }}
           isActive={selectedIndex === index}
           isFirst={index === 0}
           isLast={index === tabValues.length - 1}
@@ -81,7 +85,6 @@ function shouldRenderLeftSeparator(index, selectedIndex) {
   const isFirst = index === 0;
   const isSelected = index === selectedIndex;
   const isPrevSelected = index - 1 === selectedIndex;
-  console.log(index, selectedIndex, isFirst, isSelected, isPrevSelected);
   if (isFirst || isSelected || isPrevSelected) {
     return false;
   }
@@ -105,23 +108,65 @@ const OsSpecificTouchableHighlight = ({
   style: tabControlStyle,
   onPress,
   renderLeftSeparator
-}) =>
-// TODO ios selektiertes element wird etwas kleiner (siehe maps / dm coupon)
-  isIos ? (
-    <>
+}) => {
+  let scaleValue = new Animated.Value(0);
+  const activeTabScale = scaleValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 0.85, 0.7]
+  });
+   let transformStyle = {  marginTop: 3, marginBottom: 3, backgroundColor: "red", transform: [{ scale: activeTabScale }] };
+  return isIos ? (
+
+    // Variante mit Touchable Highlight
+    // <>
+    //   {renderLeftSeparator && <View style={{width: 1, marginTop: 8, marginBottom: 8, backgroundColor: theme.color.separator}}></View>}
+    //   <TouchableHighlight
+    //     underlayColor={
+    //       isActive
+    //       ? touchableHighlightColors.active
+    //       : touchableHighlightColors.default
+    //     }
+    //     style={tabControlStyle}
+    //     onPress={onPress}
+    //   >
+    //       {children}
+    //   </TouchableHighlight>
+    // </>
+    // Variante mit Animation
+    <View style={[tabControlStyle, {flexDirection: "row"}]}>
       {renderLeftSeparator && <View style={{width: 1, marginTop: 8, marginBottom: 8, backgroundColor: theme.color.separator}}></View>}
-      <TouchableHighlight
-      underlayColor={
-        isActive
-        ? touchableHighlightColors.active
-        : touchableHighlightColors.default
-      }
-      style={tabControlStyle}
-      onPress={onPress}
+      <TouchableWithoutFeedback
+        // underlayColor={
+        //   isActive
+        //   ? touchableHighlightColors.active
+        //   : touchableHighlightColors.default
+        // }
+        
+        onPressIn={() => {
+          scaleValue.setValue(0);
+          Animated.timing(scaleValue, {
+            toValue: 1,
+            duration: 50,
+            easing: Easing.linear,
+            useNativeDriver: true
+          }).start();
+  
+          onPress();
+        }}
+        onPressOut={() => {
+          Animated.timing(scaleValue, {
+            toValue: 0,
+            duration: 50,
+            easing: Easing.linear,
+            useNativeDriver: true
+          }).start();
+        }}
       >
-      {children}
-      </TouchableHighlight>
-    </>
+        <Animated.View style={isActive ? transformStyle : {}}>
+          {children}
+        </Animated.View>
+      </TouchableWithoutFeedback>
+    </View>
     ) : (
     <TouchableNativeFeedback
       onPress={onPress}
@@ -131,6 +176,7 @@ const OsSpecificTouchableHighlight = ({
       <View style={tabControlStyle}>{children}</View>
     </TouchableNativeFeedback>
   );
+}
 
 OsSpecificTouchableHighlight.propTypes = {
   children: node.isRequired,
