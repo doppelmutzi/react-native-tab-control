@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { arrayOf, string, func, number, bool, node } from 'prop-types';
+import { arrayOf, string, func, number, bool, node, oneOf} from 'prop-types';
 import {
   View,
   Text,
@@ -102,7 +102,7 @@ SegmentedControl.defaultProps = {
   selectedIndex: 0,
 };
 
-const OsSpecificTouchableHighlight = ({
+const IosAnimatedTab = ({
   isActive,
   children,
   style: tabControlStyle,
@@ -112,37 +112,15 @@ const OsSpecificTouchableHighlight = ({
   let scaleValue = new Animated.Value(0);
   const activeTabScale = scaleValue.interpolate({
     inputRange: [0, 0.5, 1],
-    outputRange: [1, 0.85, 0.7]
+    outputRange: [1, 0.97, 0.95]
   });
-   let transformStyle = {  marginTop: 3, marginBottom: 3, backgroundColor: "red", transform: [{ scale: activeTabScale }] };
-  return isIos ? (
-
-    // Variante mit Touchable Highlight
-    // <>
-    //   {renderLeftSeparator && <View style={{width: 1, marginTop: 8, marginBottom: 8, backgroundColor: theme.color.separator}}></View>}
-    //   <TouchableHighlight
-    //     underlayColor={
-    //       isActive
-    //       ? touchableHighlightColors.active
-    //       : touchableHighlightColors.default
-    //     }
-    //     style={tabControlStyle}
-    //     onPress={onPress}
-    //   >
-    //       {children}
-    //   </TouchableHighlight>
-    // </>
-    // Variante mit Animation
-    <View style={[tabControlStyle, {flexDirection: "row"}]}>
-      {renderLeftSeparator && <View style={{width: 1, marginTop: 8, marginBottom: 8, backgroundColor: theme.color.separator}}></View>}
-      <TouchableWithoutFeedback
-        // underlayColor={
-        //   isActive
-        //   ? touchableHighlightColors.active
-        //   : touchableHighlightColors.default
-        // }
-        
-        onPressIn={() => {
+  const transformStyle = {transform: [{ scale: activeTabScale }]};
+  const animatedViewStyle = [isActive ? transformStyle : {}, tabControlStyle];
+  return  (
+    <View style={{flex: 1, flexDirection: "row", alignItems: "center"}}>
+      {renderLeftSeparator && <View style={{height: "50%", width: 1, backgroundColor: theme.color.separator}}></View>}
+      <TouchableWithoutFeedback 
+      onPressIn={() => {
           scaleValue.setValue(0);
           Animated.timing(scaleValue, {
             toValue: 1,
@@ -162,23 +140,57 @@ const OsSpecificTouchableHighlight = ({
           }).start();
         }}
       >
-        <Animated.View style={isActive ? transformStyle : {}}>
+        <Animated.View style={animatedViewStyle}>
           {children}
         </Animated.View>
       </TouchableWithoutFeedback>
     </View>
-    ) : (
-    <TouchableNativeFeedback
-      onPress={onPress}
-      background={TouchableNativeFeedback.Ripple(theme.color.ripple, true)}
-      // useForeground={!!TouchableNativeFeedback.canUseNativeForeground()}
-    >
-      <View style={tabControlStyle}>{children}</View>
-    </TouchableNativeFeedback>
+    )
+}
+const IosTouchableHighlightTab = ({
+  isActive,
+  children,
+  style: tabControlStyle,
+  onPress,
+  renderLeftSeparator
+}) =>  (
+    <>
+      {renderLeftSeparator && <View style={{width: 1, marginTop: 8, marginBottom: 8, backgroundColor: theme.color.separator}}></View>}
+      <TouchableHighlight
+        underlayColor={
+          isActive
+          ? touchableHighlightColors.active
+          : touchableHighlightColors.default
+        }
+        style={tabControlStyle}
+        onPress={onPress}
+      >
+          {children}
+      </TouchableHighlight>
+    </>
   );
+
+const AndroidTab = ({
+    children,
+    style: tabControlStyle,
+    onPress
+  }) => (
+  <TouchableNativeFeedback
+    onPress={onPress}
+    background={TouchableNativeFeedback.Ripple(theme.color.ripple, true)}
+    // useForeground={!!TouchableNativeFeedback.canUseNativeForeground()}
+  >
+    <View style={tabControlStyle}>{children}</View>
+  </TouchableNativeFeedback>
+);
+
+const OsSpecificTab = (props) => {
+  const IosTab = props.iosVariant === "scale-animation" ? IosAnimatedTab : IosTouchableHighlightTab;
+  return isIos ? <IosTab  {...props} />
+  : <AndroidTab {...props} />
 }
 
-OsSpecificTouchableHighlight.propTypes = {
+OsSpecificTab.propTypes = {
   children: node.isRequired,
   onPress: func.isRequired,
   style: arrayOf(ViewPropTypes.style).isRequired,
@@ -186,12 +198,12 @@ OsSpecificTouchableHighlight.propTypes = {
   renderLeftSeparator: bool
 };
 
-OsSpecificTouchableHighlight.defaultProps = {
+OsSpecificTab.defaultProps = {
   isActive: false,
   renderLeftSeparator: false
 };
 
-function Tab({ label, onPress, isActive, isFirst, isLast, renderLeftSeparator }) {
+function Tab({ label, onPress, isActive, isFirst, isLast, renderLeftSeparator, iosVariant }) {
   const {
     tabStyle,
     tabTextStyle,
@@ -201,7 +213,7 @@ function Tab({ label, onPress, isActive, isFirst, isLast, renderLeftSeparator })
     lastTabStyle,
   } = tabControlStyles;
   return (
-    <OsSpecificTouchableHighlight
+    <OsSpecificTab
       isActive={isActive}
       onPress={onPress}
       style={[
@@ -211,11 +223,12 @@ function Tab({ label, onPress, isActive, isFirst, isLast, renderLeftSeparator })
         isLast ? lastTabStyle : {},
       ]}
       renderLeftSeparator={renderLeftSeparator}
+      iosVariant={iosVariant}
     >
       <Text style={[tabTextStyle, isActive ? activeTabTextStyle : {}]}>
         {label}
       </Text>
-    </OsSpecificTouchableHighlight>
+    </OsSpecificTab>
   );
 }
 
@@ -225,5 +238,10 @@ Tab.propTypes = {
   isActive: bool.isRequired,
   isFirst: bool.isRequired,
   isLast: bool.isRequired,
-  renderLeftSeparator: bool.isRequired
+  renderLeftSeparator: bool.isRequired,
+  iosVariant: oneOf(["scale-animation", "touchable-highlight"])
 };
+
+Tab.defaultProps = {
+  iosVariant: "scale-animation"
+}
