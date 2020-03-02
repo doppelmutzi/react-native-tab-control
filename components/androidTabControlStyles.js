@@ -27,7 +27,7 @@ export default StyleSheet.create({
     borderBottomColor: borderColor,
   },
   activeTabTextStyle: {
-    ...fontStyles,
+    ...fontStyles
   },
   firstTabStyle: {},
   lastTabStyle: {},
