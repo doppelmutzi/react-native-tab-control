@@ -20,10 +20,10 @@ export default {
     xs: 3,
     s: 5,
     m: 7,
-    l: 10
+    l: 10,
+    xl: 15
   },
   fontFamily: {
     normal: Platform.OS === "ios" ? "Cochin" : "Roboto"
   }
-}
-
+};

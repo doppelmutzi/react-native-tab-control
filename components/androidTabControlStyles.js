@@ -1,13 +1,13 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
-import theme from "../theme"
+import theme from "../theme";
 
 const { tabsContainerColor, borderColor, activeTextColor } = theme.color;
 
 const fontStyles = {
   fontFamily: theme.fontFamily.normal,
   fontSize: theme.fontSize.l,
-  color: activeTextColor,
+  color: activeTextColor
 };
 
 const gap = theme.spacing.s;
@@ -19,16 +19,16 @@ export default StyleSheet.create({
   tabStyle: {
     flex: 1,
     paddingVertical: gap,
-    paddingHorizontal: 2 * gap,
+    paddingHorizontal: 2 * gap
   },
-  tabTextStyle: { ...fontStyles, alignSelf: 'center' },
+  tabTextStyle: { ...fontStyles, alignSelf: "center" },
   activeTabStyle: {
     borderBottomWidth: theme.spacing.xs,
-    borderBottomColor: borderColor,
+    borderBottomColor: borderColor
   },
   activeTabTextStyle: {
     ...fontStyles
   },
   firstTabStyle: {},
-  lastTabStyle: {},
+  lastTabStyle: {}
 });

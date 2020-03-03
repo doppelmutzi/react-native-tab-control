@@ -1,12 +1,24 @@
 {
-  "name": "tab-control",
-  "version": "0.0.0",
-  "description": "No description",
-  "author": null,
+  "name": "react-native-tab-control",
+  "version": "0.0.1",
+  "description": "Prototype of a RN tab control that renders as segmented control on iOS and tab component on Android.",
+  "author": "Sebastian Weber",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start"
+  },
   "devDependencies": {
-    "babel-preset-expo": "^7.0.0"
+    "babel-preset-expo": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-babel": "^9.0.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^1.19.1"
   },
   "dependencies": {
     "expo": "^36.0.0",
