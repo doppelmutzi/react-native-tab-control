@@ -81,6 +81,7 @@ function SegmentedControl({
       iosVariant={iosVariant}
       style={tabControlStyles}
       numberValues={tabValues.length}
+      activeTabIndex={selectedIndex}
     >
       {tabValues.map((tabValue, index) => (
         <Tab
@@ -118,14 +119,11 @@ function Container({
 
   useEffect(() => {
     const leftVal = (containerWidth / numberValues) * activeTabIndex;
-    console.log("leftVal", leftVal);
-
     Animated.timing(moveAnimation, {
       toValue: leftVal,
       duration: 250
       // not supported bei native animated module
       // useNativeDriver: true
-      // andere Idee ist mit x,y position zu arbeiten, weil Komponente ganze Screenbreite nutzt und man links rechts die abstände kennt
     }).start();
   }, [containerWidth, activeTabIndex]);
 
@@ -145,6 +143,7 @@ function Container({
     >
       <Animated.View
         style={{
+          // works too
           // width: `${100 / numberValues}%`,
           width: containerWidth / numberValues,
           top: 0,
@@ -178,7 +177,7 @@ Container.propTypes = {
 };
 
 Container.defaultProps = {
-  activeTabIndex: 2
+  activeTabIndex: 0
 };
 
 function shouldRenderLeftSeparator(index, selectedIndex) {
