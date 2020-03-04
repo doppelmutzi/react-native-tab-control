@@ -29,11 +29,13 @@ const wrapperStyles = StyleSheet.create({
 
 const tabControlStyles = isIos ? iosTabControlStyles : androidTabControlStyles;
 
-const propTypeIosVariants = oneOf([
+export const iosVariants = [
   "scale-animation",
   "touchable-highlight",
   "move-animation"
-]);
+];
+
+const propTypeIosVariants = oneOf(iosVariants);
 
 const TabControl = ({ values, onChange, renderSeparators, iosVariant }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);

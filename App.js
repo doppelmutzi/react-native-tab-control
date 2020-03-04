@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, Dimensions, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Dimensions,
+  Platform,
+  TouchableWithoutFeedback
+} from "react-native";
+import { Switch, RadioButton } from "react-native-paper";
+
 import Constants from "expo-constants";
 
 import TabControl from "./components/TabControl";
@@ -10,6 +20,12 @@ import imgGiannis from "./assets/giannis.jpg"; // source https://static01.nyt.co
 import imgLeBron from "./assets/leBron.jpg"; // source https://img.bleacherreport.net/img/images/photos/003/846/523/hi-res-6a5bbbd06990dfdf097b936c2966afae_crop_north.jpg?h=533&w=800&q=70&crop_x=center&crop_y=top
 
 export default function App() {
+  console.disableYellowBox = true;
+
+  const isIos = Platform.OS === "ios";
+  const [showSeparatorsIos, setShowSeparatorsIos] = useState(true);
+  const [variant, setVariant] = useState("move-animation");
+
   const [imgSource, setImgSource] = useState(imgGiannis);
   const [viewportWidth] = useState(Math.round(Dimensions.get("window").width));
   const [viewportHeight] = useState(
@@ -25,14 +41,14 @@ export default function App() {
       <View
         style={[
           styles.container,
-          Platform.OS === "ios"
+          isIos
             ? { justifyContent: "flex-end" }
             : { justifyContent: "flex-start" }
         ]}
       >
         <View
           style={
-            Platform.OS === "ios"
+            isIos
               ? styles.tabControlContainerIos
               : styles.tabControlContainerAndroid
           }
@@ -48,13 +64,102 @@ export default function App() {
                 setImgSource(imgLuka);
               }
             }}
-            renderSeparators
-            iosVariant="move-animation"
+            renderSeparators={showSeparatorsIos}
+            iosVariant={variant}
           />
+          {isIos && renderVariantSwitcherIos()}
         </View>
       </View>
     </>
   );
+
+  function renderVariantSwitcherIos() {
+    const { s, xl } = theme.spacing;
+    const { normal: fontFamily } = theme.fontFamily;
+    const { labelColor } = theme.color;
+    const Row = ({ children }) => (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginHorizontal: xl,
+          marginBottom: xl
+        }}
+      >
+        {children}
+      </View>
+    );
+    const Label = ({ children }) => (
+      <Text style={{ fontFamily, color: labelColor, marginRight: s }}>
+        {children}
+      </Text>
+    );
+
+    const RightAlignedView = ({ children }) => (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "flex-end"
+        }}
+      >
+        {children}
+      </View>
+    );
+
+    return (
+      <View style={{ marginVertical: xl }}>
+        <Row>
+          <Label>Show Separators</Label>
+          <RightAlignedView>
+            <Switch
+              value={showSeparatorsIos}
+              onValueChange={() => {
+                setShowSeparatorsIos(!showSeparatorsIos);
+              }}
+            />
+          </RightAlignedView>
+        </Row>
+        <Row>
+          <Label>iOS Variant: TouchableHighlight</Label>
+          <RightAlignedView>
+            <RadioButton
+              value="touchable-highlight"
+              status={
+                variant === "touchable-highlight" ? "checked" : "unchecked"
+              }
+              onPress={() => {
+                setVariant("touchable-highlight");
+              }}
+            />
+          </RightAlignedView>
+        </Row>
+        <Row>
+          <Label>iOS Variant: On Press Animation</Label>
+          <RightAlignedView>
+            <RadioButton
+              value="scale-animation"
+              status={variant === "scale-animation" ? "checked" : "unchecked"}
+              onPress={() => {
+                setVariant("scale-animation");
+              }}
+            />
+          </RightAlignedView>
+        </Row>
+        <Row>
+          <Label>iOS Variant: Motion Animation</Label>
+          <RightAlignedView>
+            <RadioButton
+              value="move-animation"
+              status={variant === "move-animation" ? "checked" : "unchecked"}
+              onPress={() => {
+                setVariant("move-animation");
+              }}
+            />
+          </RightAlignedView>
+        </Row>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -66,7 +171,7 @@ const styles = StyleSheet.create({
   },
   tabControlContainerIos: {
     paddingTop: 20,
-    paddingBottom: 40,
+    paddingBottom: 60,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: theme.color.bg,

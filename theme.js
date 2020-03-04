@@ -9,7 +9,8 @@ export default {
     activeBgColor: "#3779B2",
     activeTextColor: "white",
     separator: "#3779B2",
-    ripple: "#053564"
+    ripple: "#053564",
+    labelColor: "white"
   },
   fontSize: {
     l: 20,
