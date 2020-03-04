@@ -10,7 +10,7 @@ const fontStyles = {
   color: activeTextColor
 };
 
-const gap = theme.spacing.s;
+export const gap = theme.spacing.s;
 
 export default StyleSheet.create({
   tabsContainerStyle: {

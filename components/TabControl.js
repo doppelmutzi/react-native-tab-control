@@ -17,7 +17,8 @@ import {
 import theme from "../theme";
 
 import iosTabControlStyles, {
-  touchableHighlightColors
+  touchableHighlightColors,
+  iosTabVerticalSpacing
 } from "./iOSTabControlStyles";
 import androidTabControlStyles from "./androidTabControlStyles";
 
@@ -114,7 +115,7 @@ function Container({
 }) {
   const { tabStyle, activeTabStyle, tabsContainerStyle } = style;
 
-  const margin = 4;
+  const margin = theme.spacing.s;
 
   const [moveAnimation] = useState(new Animated.Value(0));
   const [containerWidth, setContainerWidth] = useState(0);
@@ -124,7 +125,7 @@ function Container({
     Animated.timing(moveAnimation, {
       toValue: leftVal,
       duration: 250
-      // not supported bei native animated module
+      // not supported by native animated module
       // useNativeDriver: true
     }).start();
   }, [containerWidth, activeTabIndex]);
@@ -148,9 +149,9 @@ function Container({
           // works too
           // width: `${100 / numberValues}%`,
           width: containerWidth / numberValues,
-          top: 4,
           left: moveAnimation,
-          bottom: 4,
+          top: iosTabVerticalSpacing,
+          bottom: iosTabVerticalSpacing,
           position: "absolute",
           ...tabStyle,
           ...activeTabStyle

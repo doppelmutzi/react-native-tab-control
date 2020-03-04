@@ -12,6 +12,8 @@ const {
 const borderRadius = 7;
 const gap = 2;
 
+export const iosTabVerticalSpacing = gap;
+
 export default StyleSheet.create({
   tabsContainerStyle: {
     backgroundColor: tabsContainerColor,
@@ -19,10 +21,10 @@ export default StyleSheet.create({
     borderRadius,
     paddingTop: gap,
     paddingBottom: gap
-    // height: 40
   },
   tabStyle: {
     flex: 1,
+    marginVertical: iosTabVerticalSpacing,
     borderRadius
     // marginLeft: 2 * gap,
     // marginRight: 2 * gap
