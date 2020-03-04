@@ -5,8 +5,7 @@ import {
   Text,
   Image,
   Dimensions,
-  Platform,
-  TouchableWithoutFeedback
+  Platform
 } from "react-native";
 import { Switch, RadioButton } from "react-native-paper";
 
