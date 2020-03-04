@@ -17,7 +17,9 @@ import theme from "./theme";
 // img ratio 1,7 for portrait
 import imgLuka from "./assets/luka.jpg"; // source https://thegamehaus.com/nba/could-luka-doncic-win-the-2020-mvp/2019/11/24/
 import imgGiannis from "./assets/giannis.jpg"; // source https://static01.nyt.com/images/2020/01/04/sports/03nba-takeaways3-print/merlin_166319154_b92292b2-1a0f-437d-a694-8a97b586227d-superJumbo.jpg?quality=90&auto=webp
-import imgLeBron from "./assets/leBron.jpg"; // source https://img.bleacherreport.net/img/images/photos/003/846/523/hi-res-6a5bbbd06990dfdf097b936c2966afae_crop_north.jpg?h=533&w=800&q=70&crop_x=center&crop_y=top
+import imgLeBron from "./assets/leBron.jpg"; // source https://images5.alphacoders.com/966/966886.jpg
+
+import { androidTabBarHeight } from "./components/androidTabControlStyles";
 
 export default function App() {
   console.disableYellowBox = true;
@@ -36,7 +38,15 @@ export default function App() {
     <>
       <Image
         source={imgSource}
-        style={{ width: viewportWidth, height: viewportHeight }}
+        style={{
+          position: "absolute",
+          left: 0,
+          top: isIos
+            ? 0 // the image should shine through the status bar
+            : androidTabBarHeight + Constants.statusBarHeight,
+          width: viewportWidth,
+          height: viewportHeight
+        }}
       />
       <View
         style={[
@@ -171,7 +181,6 @@ const styles = StyleSheet.create({
   },
   tabControlContainerIos: {
     paddingTop: 20,
-    paddingBottom: 60,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: theme.color.bg,

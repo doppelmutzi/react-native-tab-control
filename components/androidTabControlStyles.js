@@ -4,17 +4,20 @@ import theme from "../theme";
 
 const { tabsContainerColor, borderColor, activeTextColor } = theme.color;
 
+export const androidTabBarHeight = 40;
+
 const fontStyles = {
   fontFamily: theme.fontFamily.normal,
   fontSize: theme.fontSize.l,
   color: activeTextColor
 };
 
-export const gap = theme.spacing.s;
+const gap = theme.spacing.s;
 
 export default StyleSheet.create({
   tabsContainerStyle: {
-    backgroundColor: tabsContainerColor
+    backgroundColor: tabsContainerColor,
+    height: androidTabBarHeight
   },
   tabStyle: {
     flex: 1,
