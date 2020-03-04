@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tab-control",
-    "description": "No description",
+    "name": "Tab Control (tab layout on Android, Segmented Control on iOS)",
+    "description": "Tab control that uses the respective UI patterns for the different platforms. On iOS a Segmented Control component is rendered. On Android a tab layout is used with ripple effects. For iOS, different variants can be used (scaling animation, motion animation, Touchable Highlight).",
     "slug": "snack-1205d81f-15ed-413d-9f4f-f7c4fd79aff1",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
@@ -14,10 +14,20 @@
       "hideExponentText": false
     },
     "packagerOpts": {
-      "assetExts": ["ttf", "mp4", "otf", "xml"]
+      "assetExts": [
+        "ttf",
+        "mp4",
+        "otf",
+        "xml"
+      ]
     },
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "githubUrl": "https://github.com/doppelmutzi/react-native-tab-control"
   }
 }
