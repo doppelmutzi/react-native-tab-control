@@ -127,7 +127,7 @@ function Container({
     }).start();
   }, [containerWidth, activeTabIndex]);
 
-  return iosVariant === "move-animation" ? (
+  return isIos && iosVariant === "move-animation" ? (
     <View
       style={[
         {

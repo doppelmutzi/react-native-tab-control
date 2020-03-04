@@ -24,6 +24,6 @@ export default {
     xl: 15
   },
   fontFamily: {
-    normal: Platform.OS === "ios" ? "Cochin" : "Roboto"
+    normal: Platform.OS === "ios" ? "Damascus" : "Roboto"
   }
 };
