@@ -168,6 +168,112 @@ function Container({
   );
 }
 
+// Attempt with x/y to combine with scale animation
+// function Container({
+//   iosVariant,
+//   children,
+//   numberValues,
+//   style,
+//   activeTabIndex
+// }) {
+//   const { tabStyle, activeTabStyle, tabsContainerStyle } = style;
+
+//   const margin = 4;
+
+//   const [moveAnimation] = useState(new Animated.ValueXY({ x: 0, y: 0 }));
+//   const [containerLayout, setContainerLayout] = useState({
+//     width: 0,
+//     height: 0,
+//     x: 0,
+//     y: 0
+//   });
+
+//   useEffect(() => {
+//     const { x, y, width: containerWidth } = containerLayout;
+//     const aniX = x + (containerWidth / numberValues) * activeTabIndex;
+//     const aniY = y;
+//     Animated.timing(moveAnimation, {
+//       toValue: { x: aniX, y: aniY },
+//       duration: 200
+//       // useNativeDriver: true
+//     }).start();
+//   }, [containerLayout, activeTabIndex]);
+
+//   const scaleValue = new Animated.Value(0);
+//   const activeTabScale = scaleValue.interpolate({
+//     inputRange: [0, 0.5, 1],
+//     outputRange: [1, 0.97, 0.95]
+//   });
+//   const transformStyle = { transform: [{ scale: activeTabScale }] };
+//   const timingProps = {
+//     toValue: 1,
+//     duration: 50,
+//     easing: Easing.linear,
+//     useNativeDriver: true
+//   };
+
+//   return iosVariant === "move-animation" ? (
+//     <>
+//       <Animated.View
+//         style={[
+//           {
+//             // works too
+//             // width: `${100 / numberValues}%`,
+//             width: containerLayout.width / numberValues,
+//             height: containerLayout.height,
+//             ...tabStyle,
+//             ...activeTabStyle,
+//             position: "absolute"
+//           },
+//           moveAnimation.getLayout()
+//         ]}
+//       ></Animated.View>
+//       <View
+//         style={[
+//           {
+//             marginHorizontal: margin,
+//             flexDirection: "row"
+//           }
+//           // PROBLEM layering
+//           // tabsContainerStyle
+//         ]}
+//         onLayout={event => {
+//           const { width, height, x, y } = event.nativeEvent.layout;
+//           console.log(width, height, x, y);
+//           setContainerLayout({ width, height, x, y });
+//         }}
+//       >
+//         <TouchableHighlight
+//           onPressIn={() => {
+//             Animated.timing(scaleValue, timingProps).start();
+//           }}
+//           onPressOut={() => {
+//             Animated.timing(scaleValue, {
+//               ...timingProps,
+//               toValue: 0
+//             }).start();
+//           }}
+//         >
+//           <Animated.View
+//             style={[{ width: "100%", height: 50 }, transformStyle]}
+//           >
+//             {children}
+//           </Animated.View>
+//         </TouchableHighlight>
+//       </View>
+//     </>
+//   ) : (
+//     <View
+//       style={[
+//         { marginHorizontal: margin, flexDirection: "row" },
+//         tabsContainerStyle
+//       ]}
+//     >
+//       {children}
+//     </View>
+//   );
+// }
+
 Container.propTypes = {
   iosVariant: string.isRequired,
   children: node.isRequired,
