@@ -146,9 +146,9 @@ function Container({
           // works too
           // width: `${100 / numberValues}%`,
           width: containerWidth / numberValues,
-          top: 0,
+          top: 4,
           left: moveAnimation,
-          bottom: 0,
+          bottom: 4,
           position: "absolute",
           ...tabStyle,
           ...activeTabStyle

@@ -23,9 +23,9 @@ export default StyleSheet.create({
   },
   tabStyle: {
     flex: 1,
-    borderRadius,
-    marginLeft: 2 * gap,
-    marginRight: 2 * gap
+    borderRadius
+    // marginLeft: 2 * gap,
+    // marginRight: 2 * gap
   },
   tabTextStyle: {
     color: inactiveTextColor,
@@ -41,8 +41,8 @@ export default StyleSheet.create({
   activeTabTextStyle: {
     color: activeTextColor
   },
-  firstTabStyle: { marginLeft: gap },
-  lastTabStyle: { marginRight: gap }
+  firstTabStyle: { marginLeft: 0 },
+  lastTabStyle: { marginRight: 0 }
 });
 
 export const touchableHighlightColors = {
