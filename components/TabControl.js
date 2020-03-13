@@ -23,7 +23,7 @@ import {
   ViewPropTypes
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { PanGestureHandler, State } from "react-native-gesture-handler";
+import { PanGestureHandler } from "react-native-gesture-handler";
 
 import theme from "../theme";
 
@@ -118,6 +118,18 @@ function SegmentedControl({
     </Container>
   );
 }
+
+SegmentedControl.propTypes = {
+  values: arrayOf(string).isRequired,
+  onIndexChange: func.isRequired,
+  renderSeparators: bool.isRequired,
+  iosVariant: string.isRequired,
+  selectedIndex: number
+};
+
+SegmentedControl.defaultProps = {
+  selectedIndex: 0
+};
 
 function Container({
   iosVariant,
@@ -332,18 +344,6 @@ function shouldRenderLeftSeparator(index, selectedIndex) {
   }
   return true;
 }
-
-SegmentedControl.propTypes = {
-  values: arrayOf(string).isRequired,
-  onIndexChange: func.isRequired,
-  renderSeparators: bool.isRequired,
-  iosVariant: string.isRequired,
-  selectedIndex: number
-};
-
-SegmentedControl.defaultProps = {
-  selectedIndex: 0
-};
 
 const IosScaleTab = ({
   isActive,
