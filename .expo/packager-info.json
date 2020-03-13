@@ -3,7 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": "https://rs-j7y.doppelmutzi.react-native-tab-control.exp.direct",
-  "packagerNgrokUrl": "https://packager.rs-j7y.doppelmutzi.react-native-tab-control.exp.direct",
-  "ngrokPid": 62814
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
