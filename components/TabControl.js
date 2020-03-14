@@ -208,6 +208,27 @@ function Container({
   );
 }
 
+Container.propTypes = {
+  iosVariant: string.isRequired,
+  children: node.isRequired,
+  numberValues: number.isRequired,
+  style: shape({
+    tabsContainerStyle: ViewPropTypes.styles,
+    tabStyle: ViewPropTypes.styles,
+    tabTextStyle: ViewPropTypes.styles,
+    activeTabStyle: ViewPropTypes.styles,
+    activeTabTextStyle: ViewPropTypes.styles,
+    firstTabStyle: ViewPropTypes.styles,
+    lastTabStyle: ViewPropTypes.styles
+  }).isRequired,
+  onIndexChange: func.isRequired,
+  activeTabIndex: number
+};
+
+Container.defaultProps = {
+  activeTabIndex: 0
+};
+
 // Attempt with x/y to combine with scale animation
 // function Container({
 //   iosVariant,
@@ -313,27 +334,6 @@ function Container({
 //     </View>
 //   );
 // }
-
-Container.propTypes = {
-  iosVariant: string.isRequired,
-  children: node.isRequired,
-  numberValues: number.isRequired,
-  style: shape({
-    tabsContainerStyle: ViewPropTypes.styles,
-    tabStyle: ViewPropTypes.styles,
-    tabTextStyle: ViewPropTypes.styles,
-    activeTabStyle: ViewPropTypes.styles,
-    activeTabTextStyle: ViewPropTypes.styles,
-    firstTabStyle: ViewPropTypes.styles,
-    lastTabStyle: ViewPropTypes.styles
-  }).isRequired,
-  onIndexChange: func.isRequired,
-  activeTabIndex: number
-};
-
-Container.defaultProps = {
-  activeTabIndex: 0
-};
 
 function shouldRenderLeftSeparator(index, selectedIndex) {
   const isFirst = index === 0;

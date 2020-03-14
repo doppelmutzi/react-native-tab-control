@@ -1,7 +1,7 @@
 {
   "name": "react-native-tab-control",
-  "version": "0.0.1",
-  "description": "Prototype of a RN tab control that renders as segmented control on iOS and tab component on Android.",
+  "version": "1.0.0",
+  "description": "Component that renders segmented control on iOS and a tab component on Android.",
   "author": "Sebastian Weber",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
